@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Al Mujam : Arabic Bangla Dictionary | by Shahriar Abid</title>
+  <!-- html2canvas CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #121212;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    a {color : #4CAF50;}
+    h2 {
+      color: #4CAF50;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 16px;
+      margin: 0 auto 10px;
+      display: block;
+      background-color: #1e1e1e;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      color: #e0e0e0;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #45a049;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    }
+    #resultContainer {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    #suggestionLayer {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      max-height: 300px;
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 1000;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      padding: 10px;
+    }
+    #suggestionLayer div {
+      padding: 10px;
+      cursor: pointer;
+      color: #e0e0e0;
+      transition: background-color 0.2s ease;
+    }
+    #suggestionLayer div:not(:last-child) {
+      border-bottom: 1px solid #333;
+    }
+    #suggestionLayer div:hover {
+      background-color: #2a2a2a;
+    }
+    .result-card {
+      border: 2px solid #4CAF50;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #1e1e1e;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      background-clip: padding-box;
+    }
+    .result-card h4 {
+      margin: 0 0 10px;
+      color: #e0e0e0;
+      font-weight: bold;
+      text-align: center;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      background: #2a2a2a;
+      font-size: 18px;
+    }
+    .result-card p {
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      color: #4CAF50;
+      margin: 10px 0;
+      line-height: 1.5;
+      direction: rtl;
+    }
+    .result-card button {
+      display: inline-block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .result-card button:hover {
+      background-color: #45a049;
+    }
+    .url-link {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      display: none;
+    }
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+      border-top: 1px solid #333;
+      width: 100%;
+      max-width: 400px;
+    }
+    footer a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      input[type="text"], #suggestionLayer, .result-card, footer {
+        width: 100%;
+      }
+    }
+
+    /* Custom Popup Styles */
+    .custom-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #1e1e1e;
+      padding: 20px;
+      border: 2px solid #4CAF50;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      z-index: 1001;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #e0e0e0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .custom-popup.show {
+      display: block;
+    }
+    .custom-popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 20px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .custom-popup .close-btn:hover {
+      color: #4CAF50;
+    }
+    .custom-popup-content {
+      text-align: left;
+      padding-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>المعجم</h2>
+  <input type="text" id="searchInput" placeholder="⌕ সার্চ : ماضي - এর প্রথম সিগাহ বা إسم جامد লিখুন">
+  <div id="resultContainer"></div>
+
+  <footer>
+    <p>Special Thanks - Chatgpt | Grok | Al-Wafi [Android App]</p>
+    <p>Developed by : <a href="https://shahriarabidbd.github.io">Shahriar Abid</a></p>
+    <p><a href="#" id="aboutLink">About</a> | <a href="#" id="addWordsLink">Adding New Words</a> | <a href="#" id="contactLink">Contact Us</a> | <a href="#" id="versionLink">Version</a></p>
+  </footer>
+
+  <!-- Custom Popup for About -->
+  <div id="customPopupAbout" class="custom-popup">
+    <button class="close-btn" onclick="document.getElementById('customPopupAbout').classList.remove('show')">×</button>
+    <div class="custom-popup-content">
+      <p>আসসালামু আলাইকুম।</p>
+      <p>এটা তৈরি করার মূল উদ্দেশ্য হলো আমার উস্তাদ “মুনজির আব্দুস সামি” হুজুরের জন্য।</p>
+      <p>যখন আমি দারুল আরাবিয়ায় পড়তাম তখন হুজুর আমাকে “ফিকহুল মুয়াসসার” পড়াচ্ছিলেন। তখন কোনো শব্দ না জানায় হুজুর সেটা সার্চ করতে পারতেন না। কেননা উনার ফোনটি ছিল IOS. আবার Android এর জন্য Al-Wafi নামক একটি অ্যাপ ছিল। সেটায় যেকোনো শব্দ সার্চ করলে সহজেই পাওয়া যেত [সেই অ্যাপের মত দ্বিতীয় আর কোনো অ্যাপ ছিল না]। কিন্তু সেটার কোনো IOS ভার্সন ছিল না।</p>
+      <p>তাই আমি ২০২৫ এর জানুয়ারি তে একটি Website বানাতে চেষ্টা করেছিলাম। পরে বিফল হয়।</p>
+      <p>কিন্তু আলহামদুলিল্লাহ আজ আমি সফল (১৩ জুলাই ২০২৫)</p>
+      <p>হুজুর আমার পক্ষ থেকে ছোট্ট একটি উপহার এটি। আশা করি আপনার বা আপনাদের ভালো লাগবে। যদি আপনাদের সামান্য ভালো লাগে বা কাজে লাগে তাহলেই আমার সার্থকতা।</p>
+      <p>Shahriar Abid<br>Developer of this site<br><a href="https://shahriarabidbd.github.io/Al-Mujam" style="color: #4CAF50;">https://shahriarabidbd.github.io/Al-Mujam</a></p>
+    </div>
+  </div>
+
+  <!-- Custom Popup for Adding New Words -->
+  <div id="customPopupAddWords" class="custom-popup">
+    <button class="close-btn" onclick="document.getElementById('customPopupAddWords').classList.remove('show')">×</button>
+    <div class="custom-popup-content">
+      <p>নতুন শব্দ যোগ করতে আগ্রহী? এটা শুনে আমরা খুবই আনন্দিত</p>
+      <p>এই ডিকশনারিতে নতুন আরবি-বাংলা শব্দ যোগ করার জন্য নিচের ধাপগুলো অনুসরণ করুন:</p>
+      <ol>
+        <li>প্রথমে নতুন একটি মেইল খুলুন। </li>
+        <li>আমাদের মেইল এড্রেস : <a href="mailto:contact.shahriarabidbd@gmail.com">contact.shahriarabidbd@gmail.com</a> এ নতুন শব্দটির বাংলা-আরবি অর্থ, মাসদার, মাদ্দাহ লিখুন। </li>
+        <li>ব্যাস, সেন্ড করে দিন।</li>
+      </ol>
+      <p>আপনার অবদান আমাদের ডিকশনারিকে আরও সমৃদ্ধ করবে। ধন্যবাদ!</p>
+    </div>
+  </div>
+
+  <!-- Custom Popup for Contact Us -->
+  <div id="customPopupContact" class="custom-popup">
+    <button class="close-btn" onclick="document.getElementById('customPopupContact').classList.remove('show')">×</button>
+    <div class="custom-popup-content">
+      <p>আমাদের সাথে যোগাযোগ করুন!</p>
+      <p>যদি আপনার কোনো প্রশ্ন, পরামর্শ বা সহযোগিতার প্রয়োজন হয়, আমাদের সাথে নিচের মাধ্যমে যোগাযোগ করতে পারেন:</p>
+      <ul>
+        <li><strong>ইমেইল:</strong> <a href="mailto:contact.shahriarabidbd@gmail.com">contact.shahriarabidbd@gmail.com</a></li>
+        <li><strong>GitHub:</strong> <a href="https://github.com/shahriarabidbd">Shahriar Abid</a></li>
+        <li><strong>তৈরি করেছেন:</strong> Shahriar Abid</li>
+      </ul>
+      <p>আমরা আপনার মূল্যবান মতামতের জন্য অপেক্ষা করছি।</p>
+    </div>
+  </div>
+  
+    <!-- Custom Popup for Version -->
+  <div id="customPopupVersion" class="custom-popup">
+    <button class="close-btn" onclick="document.getElementById('customPopupVersion').classList.remove('show')">×</button>
+    <div class="custom-popup-content">
+    	<h3 style="color: #4CAF50;">Website : </h3>
+      <ul>
+        <li>14 July 2025 : First Released</li>
+      </ul>
+   	<h3 style="color: #4CAF50;">Database : </h3>
+         <ul>
+        <li>Current Entry : 74855</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <script>
+    let allData = [];
+    let isDataLoaded = false;
+
+    const input = document.getElementById("searchInput");
+    const resultContainer = document.getElementById("resultContainer");
+
+    input.addEventListener("input", async function () {
+      const keyword = this.value.toLowerCase().trim();
+      resultContainer.innerHTML = "";
+
+      if (keyword.length === 0) {
+        return;
+      }
+
+      if (!isDataLoaded) {
+        try {
+          const res = await fetch("./dictionary-v3.json");
+          if (!res.ok) throw new Error("DataBase লোড করতে সমস্যা হচ্ছে। Error : " + res.status);
+          const json = await res.json();
+          allData = Array.isArray(json) ? json : (json[Object.keys(json)[0]] || []);
+          isDataLoaded = true;
+        } catch (err) {
+          resultContainer.innerHTML = `<p style="color: #ff6b6b;">ডেটা লোড করা যায়নি: ${err.message}. দয়া করে Screenshot সহ আমাদের সাথে যোগাযোগ করুন।</p>`;
+          console.error(err);
+          return;
+        }
+      }
+
+      const filtered = allData.filter(row =>
+        row._search && row._search.toLowerCase().includes(keyword)
+      );
+
+      if (filtered.length > 0) {
+        const suggestionLayer = document.createElement("div");
+        suggestionLayer.id = "suggestionLayer";
+        filtered.forEach(row => {
+          const suggestion = document.createElement("div");
+          suggestion.textContent = row._from;
+          suggestion.addEventListener("click", () => {
+            showDetails(row);
+            input.value = "";
+            suggestionLayer.remove();
+          });
+          suggestionLayer.appendChild(suggestion);
+        });
+        resultContainer.appendChild(suggestionLayer);
+      } else {
+        resultContainer.innerHTML = `<p style="color: #ff6b6b; text-align: center;">আপনার সার্চকৃত শব্দটি খুজে পাওয়া যায়নি। দয়া করে আবার চেষ্টা করুন। অন্যথায়, আপনি যদি এই শব্দটি আমাদের DataBase এ যুক্ত করাতে চান তাহলে আমাদের সাথে যোগাযোগ করুন। </p>`;
+      }
+    });
+
+    function showDetails(row) {
+      const result = document.createElement("div");
+      result.className = "result-card";
+      result.innerHTML = `
+        <h4>${row._from}</h4>
+        <p>${row._to}</p>
+        <button id="downloadBtn">DOWNLOAD</button>
+        <div class="url-link" id="urlLink"></div>
+      `;
+      resultContainer.innerHTML = "";
+      resultContainer.appendChild(result);
+
+      // Download button functionality
+      const downloadBtn = document.getElementById("downloadBtn");
+      const urlLink = document.getElementById("urlLink");
+      urlLink.textContent = "https://shahriarabidbd.github.io/Al-Mujam";
+      urlLink.style.display = "none"; // ডিফল্ট হিসেবে লুকানো
+
+      downloadBtn.addEventListener("click", function () {
+        urlLink.style.display = "block"; // লিঙ্ক প্রদর্শন
+        const resultCard = document.querySelector(".result-card");
+        html2canvas(resultCard, {
+          scale: 2, // উচ্চ গুণমানের জন্য
+          useCORS: true,
+          logging: false // ত্রুটি লগ বন্ধ
+        }).then(canvas => {
+          const link = document.createElement("a");
+          link.download = `${row._from}_result.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          urlLink.style.display = "none"; // ডাউনলোডের পর লুকানো
+        });
+      });
+    }
+
+    // Custom Popup Functionality
+    document.getElementById("aboutLink").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("customPopupAbout").classList.add("show");
+    });
+
+    document.getElementById("addWordsLink").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("customPopupAddWords").classList.add("show");
+    });
+
+    document.getElementById("contactLink").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("customPopupContact").classList.add("show");
+    });
+    
+    document.getElementById("versionLink").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("customPopupVersion").classList.add("show");
+    });
+
+    // Optional: Link from Adding New Words to Contact Us
+    document.getElementById("contactLinkFromAdd").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("customPopupAddWords").classList.remove("show");
+      document.getElementById("customPopupContact").classList.add("show");
+    });
+  </script>
+</body>
+</html>
