@@ -2,8 +2,14 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>Al Mujam : Arabic Bangla Dictionary | by Shahriar Abid</title>
+  <!-- Viewport meta tag for responsive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Al-Mujam : Arabic Bangla Dictionary | by Shahriar Abid</title>
   <!-- html2canvas CDN -->
+  	    <link rel="icon" href="al_mujam_logo.jpg" type="image/x-icon">
+    <meta name="description" content="Al-Mujam is an Arabic to Bangla Dictionary where you can search any Arabic word and get meanings with masdar, maddah, bab, and more. Perfect for students and language enthusiasts. Created by Shahriar Abid.">
+    <meta name="keywords" content="shahriarabidbd,Al-Mujam : Arabic Bangla Dictionary,Al Wafi Website, Al Wafi Dictionary Pdf, Al Wafi Download, Bangladeshi Web Developer, Shahriar Abid , Shahriar Abid bd,Shahriar Abid Developer">
+    <meta name="author" content="Shahriar Abid">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
@@ -23,12 +29,13 @@
       color: #4CAF50;
       text-align: center;
       margin-bottom: 20px;
+      font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
     }
     input[type="text"] {
       width: 100%;
       max-width: 400px;
       padding: 12px;
-      font-size: 16px;
+      font-size: clamp(1rem, 3vw, 1.2rem); /* Responsive font size */
       margin: 0 auto 10px;
       display: block;
       background-color: #1e1e1e;
@@ -45,8 +52,8 @@
     }
     #resultContainer {
       position: relative;
-      max-width: 400px;
       width: 100%;
+      max-width: 400px;
       margin: 0 auto;
     }
     #suggestionLayer {
@@ -68,6 +75,7 @@
       padding: 10px;
       cursor: pointer;
       color: #e0e0e0;
+      font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
       transition: background-color 0.2s ease;
     }
     #suggestionLayer div:not(:last-child) {
@@ -100,12 +108,12 @@
       border-radius: 8px;
       padding: 10px;
       background: #2a2a2a;
-      font-size: 18px;
+      font-size: clamp(1.1rem, 3vw, 1.3rem); /* Responsive font size */
     }
     .result-card p {
       padding: 10px;
       text-align: center;
-      font-size: 24px;
+      font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
       color: #4CAF50;
       margin: 10px 0;
       line-height: 1.5;
@@ -120,6 +128,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
       transition: background-color 0.3s ease;
     }
     .result-card button:hover {
@@ -127,7 +136,7 @@
     }
     .url-link {
       margin-top: 10px;
-      font-size: 12px;
+      font-size: clamp(0.7rem, 2vw, 0.9rem); /* Responsive font size */
       color: #888;
       text-align: center;
       display: none;
@@ -137,7 +146,7 @@
       padding: 20px;
       text-align: center;
       color: #888;
-      font-size: 14px;
+      font-size: clamp(0.8rem, 2vw, 1rem); /* Responsive font size */
       border-top: 1px solid #333;
       width: 100%;
       max-width: 400px;
@@ -152,9 +161,12 @@
     @media (max-width: 600px) {
       input[type="text"], #suggestionLayer, .result-card, footer {
         width: 100%;
+        padding: 10px;
+      }
+      h2 {
+        font-size: 1.5rem;
       }
     }
-
     /* Custom Popup Styles */
     .custom-popup {
       display: none;
@@ -172,7 +184,7 @@
       max-height: 80vh;
       overflow-y: auto;
       color: #e0e0e0;
-      font-size: 16px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
       line-height: 1.5;
     }
     .custom-popup.show {
@@ -185,7 +197,7 @@
       background: none;
       border: none;
       color: #e0e0e0;
-      font-size: 20px;
+      font-size: clamp(1.2rem, 3vw, 1.5rem); /* Responsive font size */
       cursor: pointer;
       transition: color 0.3s ease;
     }
@@ -214,12 +226,12 @@
     <button class="close-btn" onclick="document.getElementById('customPopupAbout').classList.remove('show')">×</button>
     <div class="custom-popup-content">
       <p>আসসালামু আলাইকুম।</p>
-      <p>এটা তৈরি করার মূল উদ্দেশ্য হলো আমার উস্তাদ “মুনজির আব্দুস সামি” হুজুরের জন্য।</p>
-      <p>যখন আমি দারুল আরাবিয়ায় পড়তাম তখন হুজুর আমাকে “ফিকহুল মুয়াসসার” পড়াচ্ছিলেন। তখন কোনো শব্দ না জানায় হুজুর সেটা সার্চ করতে পারতেন না। কেননা উনার ফোনটি ছিল IOS. আবার Android এর জন্য Al-Wafi নামক একটি অ্যাপ ছিল। সেটায় যেকোনো শব্দ সার্চ করলে সহজেই পাওয়া যেত [সেই অ্যাপের মত দ্বিতীয় আর কোনো অ্যাপ ছিল না]। কিন্তু সেটার কোনো IOS ভার্সন ছিল না।</p>
-      <p>তাই আমি ২০২৫ এর জানুয়ারি তে একটি Website বানাতে চেষ্টা করেছিলাম। পরে বিফল হয়।</p>
-      <p>কিন্তু আলহামদুলিল্লাহ আজ আমি সফল (১৩ জুলাই ২০২৫)</p>
-      <p>হুজুর আমার পক্ষ থেকে ছোট্ট একটি উপহার এটি। আশা করি আপনার বা আপনাদের ভালো লাগবে। যদি আপনাদের সামান্য ভালো লাগে বা কাজে লাগে তাহলেই আমার সার্থকতা।</p>
-      <p>Shahriar Abid<br>Developer of this site<br><a href="https://shahriarabidbd.github.io/Al-Mujam" style="color: #4CAF50;">https://shahriarabidbd.github.io/Al-Mujam</a></p>
+      <p>এটা মূলত তৈরি করা হয়েছে আমার উস্তাদ “মুনজির আব্দুস সামি” হুজুরের জন্য।</p>
+      <p>কেননা, একদিন হুজুর আমাকে “ফিকহুল মুয়াসসার” পড়াচ্ছিলেন। তখন কোনো একটি শব্দ জানা না থাকায় হুজুর সেটা সার্চ করতে পারছিলেন না। কেননা উনার ফোনটি ছিল IOS. আর শুধুমাত্র Android এর জন্য Al-Wafi নামক একটি অ্যাপ ছিল। সেটায় যেকোনো শব্দ সার্চ করলে সহজেই অর্থ পাওয়া যেত [সেই অ্যাপের মত দ্বিতীয় আর কোনো অ্যাপ ছিল না]। কিন্তু সেটার কোনো IOS ভার্সন ছিল না।</p>
+      <p>তখন আমি ২০২৫ এর জানুয়ারি তে একটি Website বানাতে চেষ্টা করেছিলাম। কিন্তু সেটা সফল হয়নি।</p>
+      <p>কিন্তু আলহামদুলিল্লাহ আজ আমি এই Website তৈরি করতে সফল (১৪ জুলাই ২০২৫)</p>
+      <p>আশা করি আপনার বা আপনাদের এই ওয়েবসাইটটি ভালো লাগবে। যদি আপনাদের সামান্যও ভালো লাগে বা কাজে লাগে তাহলেই আমি সার্থক।</p>
+      <p>Shahriar Abid<br>Developer of this site<br><a href="https://shahriarabidbd.github.io/al-mujam" style="color: #4CAF50;">https://shahriarabidbd.github.io/al-mujam</a></p>
     </div>
   </div>
 
@@ -234,7 +246,7 @@
         <li>আমাদের মেইল এড্রেস : <a href="mailto:contact.shahriarabidbd@gmail.com">contact.shahriarabidbd@gmail.com</a> এ নতুন শব্দটির বাংলা-আরবি অর্থ, মাসদার, মাদ্দাহ লিখুন। </li>
         <li>ব্যাস, সেন্ড করে দিন।</li>
       </ol>
-      <p>আপনার অবদান আমাদের ডিকশনারিকে আরও সমৃদ্ধ করবে। ধন্যবাদ!</p>
+      <p>আপনার অবদান আমাদের ডিকশনারিকে আরও সমৃদ্ধ করবে। জাযাকাল্লাহু খাইরান!</p>
     </div>
   </div>
 
@@ -247,9 +259,8 @@
       <ul>
         <li><strong>ইমেইল:</strong> <a href="mailto:contact.shahriarabidbd@gmail.com">contact.shahriarabidbd@gmail.com</a></li>
         <li><strong>GitHub:</strong> <a href="https://github.com/shahriarabidbd">Shahriar Abid</a></li>
-        <li><strong>তৈরি করেছেন:</strong> Shahriar Abid</li>
       </ul>
-      <p>আমরা আপনার মূল্যবান মতামতের জন্য অপেক্ষা করছি।</p>
+      <p>আমরা আপনার মহামূল্যবান মতামতের জন্য অপেক্ষায় আছি।</p>
     </div>
   </div>
   
@@ -385,4 +396,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
